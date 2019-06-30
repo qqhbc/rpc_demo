@@ -1,0 +1,23 @@
+spring:
+#时间戳统一转换
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+  datasource:
+    blog:
+      username: root
+      url: jdbc:mysql://127.0.0.1:3306/blog?useUnicode=true&characterEncoding=utf8 #乱码问题解决
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver
+    test:
+      username: root
+      url: jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&characterEncoding=utf8 #乱码问题解决
+      password: 123456
+      driver-class-name: com.mysql.jdbc.Driver  
+server:
+  port: 8084 
+  context-path: /rpc
+logging:
+  level: 
+    com.yc.log: debug
+#时间戳统一转换
