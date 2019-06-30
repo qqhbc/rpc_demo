@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+    <mapper namespace="com.yc.mapper.UserMapper">
+    
+    <resultMap type="User" id="userResultMap">
+    	<id property="id" column="id"/>
+    	<result property="tAge" column="t_age"/>
+    </resultMap>
+    
+    	<select id="getTotalCounts" resultType="Integer">
+    		select count(id) from t_user
+    	</select>
+    	
+        <select id="verifyByName" resultType="String" parameterType="String">
+            select 
+            	password
+            from t_user
+            where name = #{name}
+        </select> 
+        <select id="findAll" resultMap="userResultMap">
+        	select
+        		id,
+        		name,
+        		password,
+        		t_age,
+        		address
+        	from t_user
+        	limit 0,100	
+        </select> 
+        <select id="getUserById" parameterType="Integer" resultMap="userResultMap">
+        	select
+        		id,
+        		name,
+        		password,
+        		t_age,
+        		address
+        	from t_user
+        	where id = #{id}	
+        </select> 
+        <delete id="removeUserById" parameterType="Integer">
+        	delete from t_user where id = #{id}
+        </delete>
+        <update id="updateUserById" parameterType="User">
+        	update t_user 
+        	<set>
+        		<if test="tAge != '' and tAge !=null ">t_age = #{tAge},</if>
+        		<if test="address != '' and address != null">address = #{address}</if>
+        	</set>	
+        	where id = #{id}	
+        </update>
+        <insert id="add" parameterType="User">
+        	insert into t_user(
+        		name,password,t_age,address
+        	) values (
+        		#{name},#{password},#{tAge},#{address}
+        	)
+        </insert>
+        
+    </mapper>
