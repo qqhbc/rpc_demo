@@ -23,18 +23,19 @@ public class RestTemplateService {
     @Autowired
     private RestTemplate restTemplate;
     
-    public <T> T get(String url, Map<String,Object> headers,Class<T> type){
+    public <T> T post(String url, Map<String,Object> headers,Class<T> type){
         UriComponents uriComponent = UriComponentsBuilder.fromUriString(url).build().expand(headers).encode();
         String uri = uriComponent.toString();
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
         httpHeaders.set("Accept", MediaType.APPLICATION_JSON_VALUE);
+        String str = "{\"content\":{\"productModel\":\"itel W6002\",\"deviceTag\":\"HD9XZFA3\",\"gaid\":\"640cd061-43b7-47e1-b567-4b27c726fd61\",\"imei\":\"359229106181540\",\"lock\":{\"expiration\":7959743999,\"state\":\"active\"},\"isRooted\":false,\"manufacturer\":\"itel\"}}";
         headers.entrySet().stream().forEach(b -> {
             httpHeaders.set(b.getKey(), String.valueOf(b.getValue()));
         });
-        HttpEntity<String> entity = new HttpEntity<>(httpHeaders);
+        HttpEntity<String> entity = new HttpEntity<>(str, httpHeaders);
         try{
-            ResponseEntity<T> response = restTemplate.exchange(uri, HttpMethod.GET, entity, type);
+            ResponseEntity<T> response = restTemplate.exchange(uri, HttpMethod.POST, entity, type);
             int code = response.getStatusCodeValue();
             if(code == 200 || code == 201 || code == 202){
                 logger.info("remote get request success");
